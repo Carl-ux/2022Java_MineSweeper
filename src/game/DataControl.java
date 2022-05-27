@@ -8,4 +8,5 @@ LastEditor:
 package game;
 
 public class DataControl {
+
 }
