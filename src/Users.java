@@ -81,6 +81,38 @@ public class Users {
         }
     }
 
+
+    //judge whether the User_name exists or not
+    public boolean isExist(String name) {
+        for(int i = 0;i < userlist.getLength(); i++) {
+            Node user = userlist.item(i);
+            if(name.equals(user.getChildNodes().item(1).getTextContent()))
+                return true;
+        }
+        return false;
+    }
+
+    //get number of user
+    public int getUserCount() {
+        return userlist.getLength();
+    }
+
+    //验证账号密码
+    public String authentication(int ID,String pass)
+    {
+        pass = MD5.md5(MD5.salt + pass);
+        for (int i = 0;i < userlist.getLength();i++)
+        {
+            Node user = userlist.item(i);
+            if(ID == Integer.parseInt(user.getChildNodes().item(0).getTextContent())
+            && pass.equals(user.getChildNodes().item(2).getTextContent()))
+                return user.getChildNodes().item(1).getTextContent();
+        }
+        return null;
+    }
+
+
+
 }
 
 //实现md5加密

@@ -1,4 +1,2 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<USERS>
-
-</USERS>
+<USERS><USER><ID>10000</ID><NAME>Carl</NAME><PASSWORD>b52fddbefbfd79b4771beba7ee50c5a9</PASSWORD><SAFETY_QUESTION>你最擅长的编程语言是？</SAFETY_QUESTION><ANSWER>21fc29f6cb47d9f320522041cba1be94</ANSWER></USER></USERS>

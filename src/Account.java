@@ -10,8 +10,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Account extends JFrame {
-     Users users = new Users();
+    Users users = new Users();
     public JTabbedPane jtab;       //选项卡面板组件
+    private int BASE_ID = 10000;
 
     //Construct method,mainFrame为主窗体
     public Account(JFrame mainFrame) {
@@ -32,35 +33,65 @@ public class Account extends JFrame {
         //面板组件JPanel
         JPanel panel_login = new PanelLogin();
         JPanel panel_register = new PanelRegister();
-        JPanel panel_reset = new PanelReset();
         jtab.add("登录", panel_login);
         jtab.add("注册", panel_register);
-        jtab.add("修改账户信息", panel_reset);
         this.add(jtab);
         this.setVisible(true);
     }
 
 
-        //TODO 登录 注册 修改面板的内部实现
+        //TODO 登录 注册 面板的内部实现
         class PanelLogin extends JPanel {
 
             public PanelLogin() {
+                this.setLayout(null);
+                JLabel label_account = new JLabel("ID:");
+                label_account.setBounds(50,100,50,30);
+                this.add(label_account);
+                JTextField text_account = new JTextField();
+                text_account.setBounds(150,100,300,30);
+                this.add(text_account);
 
+                JLabel label_pass=new JLabel("密码:");
+                label_pass.setBounds(50,150,50,30);
+                this.add(label_pass);
+                JPasswordField text_pass=new JPasswordField();
+                text_pass.setBounds(150,150,300,30);
+                this.add(text_pass);
+
+                JButton btn_login = new JButton("登录");
+                btn_login.setBounds(230, 250, 100, 30);
+                btn_login.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent arg0) {
+                        if(text_account.getText().isEmpty() || String.valueOf(text_pass.getPassword()).isEmpty()) {
+                            JOptionPane.showMessageDialog(Account.this, "账号和密码不能为空", "登录失败", JOptionPane.WARNING_MESSAGE);
+                        }
+                        else
+                        {
+                            String name = users.authentication(Integer.parseInt(text_account.getText()),String.valueOf(text_pass.getPassword()));
+                            if(name != null)
+                            {
+                                Main.login(Integer.parseInt(text_account.getText()),name);
+                                Account.this.dispose();
+                            }
+                            else
+                                JOptionPane.showMessageDialog(Account.this, "账号或密码错误", "登录失败", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
+                this.add(btn_login);
             }
-
-
-
 
         }
 
 
-         class PanelRegister extends JPanel {
-
+        class PanelRegister extends JPanel {
 
             public PanelRegister() {
                 this.setLayout(null);
 
-                JLabel label_name = new JLabel("账户名:");
+                JLabel label_name = new JLabel("用户名:");
                 label_name.setBounds(50,40,50,30);
                 this.add(label_name);
                 JTextField text_name = new JTextField();
@@ -103,34 +134,32 @@ public class Account extends JFrame {
                 btn_register.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent arg0) {
-                        //TODO
-
-
+                        if(text_name.getText().isEmpty() || String.valueOf(text_pass.getPassword()).isEmpty()
+                        || String.valueOf(text_passc.getPassword()).isEmpty() || text_answer.getText().isEmpty()) {
+                            //弹窗方法
+                            JOptionPane.showMessageDialog(Account.this,"用户名、密码和答案不能为空",
+                                    "注册失败",JOptionPane.WARNING_MESSAGE);
+                        }
+                        else {
+                            if(users.isExist(text_name.getText())) {
+                                JOptionPane.showMessageDialog(Account.this,"用户名已存在",
+                                        "注册失败",JOptionPane.ERROR_MESSAGE);
+                            }
+                            else if(!(String.valueOf(text_pass.getPassword()).equals(String.valueOf(text_passc.getPassword())))) {
+                                JOptionPane.showMessageDialog(Account.this,"确认密码输入有误",
+                                        "注册失败",JOptionPane.ERROR_MESSAGE);
+                            }
+                            else {
+                                users.addUser(users.getUserCount() + BASE_ID,text_name.getText(),String.valueOf(text_pass.getPassword()),
+                                        comboBox_question.getSelectedItem().toString(),text_answer.getText());
+                                JOptionPane.showMessageDialog(Account.this,"注册成功,你的账号是" +
+                                        (users.getUserCount() + BASE_ID -1),"注册成功",JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
                     }
                 });
 
                 this.add(btn_register);
-
-
             }
-
-
-
         }
-
-
-
-        class PanelReset extends JPanel {
-
-
-            public PanelReset() {
-
-            }
-
-
-        }
-
-
-
-
 }

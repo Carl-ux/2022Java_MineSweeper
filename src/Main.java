@@ -5,11 +5,14 @@ Date:2022-05-27
 Description:各功能模块统一调度  程序启动界面
 LastEditor:
 */
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import game.*;
 
 public class Main {
     private static int id = 0;    //User ID-login   0-not login yet
+    private static String name;
     private static JLabel label_account;
     private static JLabel label_name;
 
@@ -25,7 +28,7 @@ public class Main {
         label_account.setBounds(5,5,400,30);
         frame.add(label_account);
 
-        label_name=new JLabel("昵称:无");
+        label_name=new JLabel("用户名:无");
         label_name.setBounds(5,20,400,30);
         frame.add(label_name);
 
@@ -37,12 +40,28 @@ public class Main {
 
 
         JButton btn_game=new JButton("开始游戏");
-        //TODO Game Part
+
+        btn_game.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(id == 0)
+                {
+                    if(JOptionPane.showConfirmDialog(frame, "是否打开登录界面？", "未登录",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+                        frame.setVisible(false);
+                        new Account(frame);
+                    }
+                }
+                else {
+                    frame.setVisible(false);
+                    new Game(frame,name);
+                }
+            }
+        });
         btn_game.setBounds(frame.getWidth()/2-75,130,150,30);
         frame.add(btn_game);
 
+
         JButton btn_account=new JButton("账号管理");
-        //TODO Account Part
         btn_account.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(false);
@@ -51,6 +70,7 @@ public class Main {
         });
         btn_account.setBounds(frame.getWidth()/2-75,170,150,30);
         frame.add(btn_account);
+
 
         JButton btn_charts=new JButton("排行榜");
         //TODO Chart Part
@@ -64,7 +84,10 @@ public class Main {
     }
 
     //由Account对象调用，登录成功则给id赋值
-    public static void login(int i) {
-    //TODO
+    public static void login(int ID,String Name) {
+        id = ID;
+        name = Name;
+        label_account.setText("账号:" + id);
+        label_name.setText("用户名:" + name);
     }
 }
