@@ -1,11 +1,10 @@
-/*
-File:Main.java
+package Service;/*
+File:Service.Main.java
 Author: Carl
 Date:2022-05-27
 Description:各功能模块统一调度  程序启动界面
 LastEditor:
 */
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import game.*;
@@ -74,6 +73,12 @@ public class Main {
 
         JButton btn_charts=new JButton("排行榜");
         //TODO Chart Part
+        btn_charts.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                new Charts(frame);
+            }
+        });
         btn_charts.setBounds(frame.getWidth()/2-75,210,150,30);
         frame.add(btn_charts);
 

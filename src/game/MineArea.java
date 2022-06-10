@@ -4,6 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+
+
+import Service.GameWin;
+
 public class MineArea extends JPanel implements ActionListener, MouseListener{
     public JButton reStart;
     public Block[][] block;
@@ -188,8 +192,7 @@ public class MineArea extends JPanel implements ActionListener, MouseListener{
             spendTime ++;
             showTime.setText("" + spendTime);
         }
-        GameWin();
-
+        winjudge();
     }
     public void show(int m, int n) {
         if (block[m][n].getAroundMineNumber() > 0 && !block[m][n].getIsOpen()) {
@@ -206,12 +209,20 @@ public class MineArea extends JPanel implements ActionListener, MouseListener{
         }
     }
 
-    public void GameWin()
+    public void winjudge()
     {
-
+        int num = 0;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (!block[i][j].getIsOpen())
+                    num++;
+            }
+        }
+        if(num == (int) (row * col * MineRate)) {
+            new GameWin(user_name, String.valueOf(spendTime));
+            time.stop();
+        }
     }
-
-
 
     @Override
     public void mouseClicked(MouseEvent e) {
